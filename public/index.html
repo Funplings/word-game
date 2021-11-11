@@ -7,6 +7,7 @@
   <body>
     <h1>Word Game</h2>
     <ul id="messages"></ul>
+    <button id="createRoomButton">Create Room</button>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
@@ -18,6 +19,12 @@
     var messages = document.getElementById('messages');
     var form = document.getElementById('form');
     var input = document.getElementById('input');
+
+    var createRoomButton = document.getElementById("createRoomButton");
+
+    createRoomButton.addEventListener('click', function(e) {
+      socket.emit('generate code', socket.id);
+    })
   
     form.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -25,6 +32,10 @@
         socket.emit('chat message', input.value);
         input.value = '';
       }
+    });
+
+    socket.on('generate code', function(code) {
+      location.href='/' + code;
     });
   
     socket.on('chat message', function(msg) {
